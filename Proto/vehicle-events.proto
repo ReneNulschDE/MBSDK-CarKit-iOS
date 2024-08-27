@@ -164,7 +164,26 @@ message VehicleAttributeStatus {
     EcoHistogramValue eco_histogram_value = 28;
     WeeklyProfileValue weekly_profile_value = 29;
     ChargeProgramsValue charge_programs_value = 31;
+    ChargingBreakClockTimerValue chargingbreak_clocktimer_value = 32;
   }
+}
+
+message ChargingBreakClockTimerValue {
+  repeated ChargingBreakClockTimerEntry chargingbreak_clocktimer_entry = 1;
+}
+
+enum ChargingBreakClockTimerEntryStatus {
+  INACTIVE = 1;
+  ACTIVE = 2;
+}
+
+message ChargingBreakClockTimerEntry {
+  ChargingBreakClockTimerEntryStatus status = 1;
+  int32 endTimeHour = 2;
+  int32 endTimeMinute = 3;
+  int32 startTimeHour = 4;
+  int32 startTimeMin = 5;
+  int32 timerId = 6;
 }
 
 message ChargeProgramsValue {
