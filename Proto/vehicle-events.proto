@@ -172,10 +172,6 @@ message ChargingBreakClockTimerValue {
   repeated ChargingBreakClockTimerEntry chargingbreak_clocktimer_entry = 1;
 }
 
-enum ChargingBreakClockTimerEntryStatus {
-  INACTIVE = 1;
-  ACTIVE = 2;
-}
 
 message ChargingBreakClockTimerEntry {
   ChargingBreakClockTimerEntryStatus status = 1;

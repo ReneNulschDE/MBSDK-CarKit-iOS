@@ -282,6 +282,7 @@ message ACP {
         RTMREADCONFIG = 2410;
         AVPACTIVATE = 2700;
         CHARGECONTROLCONFIGURE = 2800;
+        CHARGINGBREAKCLOCKTIMERCONFIGURE = 3000;
 
         unknownCommandType = 0;
         doorsLock = 100;
@@ -414,5 +415,6 @@ message ACP {
         rtmReadConfig = 2410;
         avpActivate = 2700;
         chargecontrolconfigure = 2800;
+        chargingbreakclocktimerconfigure = 3000;
     }
 }
