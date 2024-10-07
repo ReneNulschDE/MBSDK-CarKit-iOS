@@ -98,6 +98,7 @@ message CommandRequest {
     ActivateVehicleKeys activate_vehicle_keys = 49;
 
     ChargingBreakClocktimerConfigure chargingbreak_clocktimer_configure = 50;
+    WiperHealthReset wiper_health_reset = 64;
   }
 }
 
@@ -630,3 +631,5 @@ message ChargingBreakClockTimerConfigureEntry {
   int32 startTimeMin = 5;
   int32 timerId = 6;
 }
+
+message WiperHealthReset {}
