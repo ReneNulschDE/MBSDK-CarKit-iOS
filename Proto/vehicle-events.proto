@@ -175,11 +175,25 @@ message VehicleAttributeStatus {
     ChargingBreakClockTimerValue chargingbreak_clocktimer_value = 32;
     ChargingPowerControl charging_power_control = 33;
     TcuConnectionStateLowChannelStatus tcu_connection_state_low_channel = 38;
+    PrecondState precond_state = 44;
   }
 }
 
 message ChargingBreakClockTimerValue {
   repeated ChargingBreakClockTimerEntry chargingbreak_clocktimer_entry = 1;
+}
+
+enum PrecondStateType {
+  PRECOND_STATE_TYPE_ON_UNLOCK = 0;
+  PRECOND_STATE_TYPE_AT_DEPARTURE_TIME = 1;
+  PRECOND_STATE_TYPE_IMMEDIATE = 2;
+  PRECOND_STATE_TYPE_CHILD_PRESENCE_DETECTION = 3;
+}
+
+message PrecondState {
+  bool activation_state = 1;
+  bool precond_immediate_support = 2;
+  repeated PrecondStateType precond_state_types = 3;
 }
 
 message ChargingPowerControl {
