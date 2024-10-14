@@ -173,6 +173,7 @@ message VehicleAttributeStatus {
     WeeklyProfileValue weekly_profile_value = 29;
     ChargeProgramsValue charge_programs_value = 31;
     ChargingBreakClockTimerValue chargingbreak_clocktimer_value = 32;
+    ChargingPowerControl charging_power_control = 33;
     TcuConnectionStateLowChannelStatus tcu_connection_state_low_channel = 38;
   }
 }
@@ -181,6 +182,15 @@ message ChargingBreakClockTimerValue {
   repeated ChargingBreakClockTimerEntry chargingbreak_clocktimer_entry = 1;
 }
 
+message ChargingPowerControl {
+  int32 charge_status = 1;
+  int32 ctrl_duration = 2;
+  int32 ctrl_info = 3;
+  int32 charge_power = 4;
+  int32 serv_stat = 5;
+  int32 serv_avail = 6;
+  int32 use_case = 7;
+}
 
 message ChargingBreakClockTimerEntry {
   ChargingBreakClockTimerEntryStatus status = 1;
