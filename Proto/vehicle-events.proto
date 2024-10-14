@@ -129,6 +129,14 @@ message VehicleAttributeStatus {
     T24H = 2;
   }
 
+  enum TcuConnectionStateLowChannelStatus {
+    UNKNOWN_TCU_CONNECTION_STATE = 0;
+    INITIALLY_CONNECTED = 1;
+    RECONNECTED = 2;
+    DISCONNECTED = 3;
+    UNPLANNED_DISCONNECTED = 4;
+  }
+  
   // A list of service ids for which this attribute was sent
   // this field ist just used backend internally and will always
   // be empty when sent out to the client.
@@ -165,6 +173,7 @@ message VehicleAttributeStatus {
     WeeklyProfileValue weekly_profile_value = 29;
     ChargeProgramsValue charge_programs_value = 31;
     ChargingBreakClockTimerValue chargingbreak_clocktimer_value = 32;
+    TcuConnectionStateLowChannelStatus tcu_connection_state_low_channel = 38;
   }
 }
 
