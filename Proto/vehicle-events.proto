@@ -423,6 +423,7 @@ message PushMessage {
     AppTwinCommandStatusUpdatesByVIN apptwin_command_status_updates_by_vin = 17;
     AppTwinPendingCommandsRequest apptwin_pending_command_request = 18;
     AssignedVehicles assigned_vehicles = 19;
+    DataChangeEvent data_change_event = 21;
   }
 }
 
@@ -502,4 +503,31 @@ message PreferredDealerChange {
 
   // When was the event emitted (milliseconds in Unix time)
   int64 emit_timestamp_in_ms = 10;
+}
+
+message AcknowledgeDataChangeEvent {
+  int32 sequence_number = 1;
+}
+
+enum Scope {
+  USER = 0;
+  ONBOARD_FENCES = 1;
+  USER_PIN = 3;
+  SERVICE_PREREQUISITE = 4;
+  USER_PROFILE_PICTURE = 5;
+}
+
+message Scopes {
+  Scope scope = 1;
+  string ciamId = 2;
+  string vin = 3;
+  map<string, string> additional_resources = 4;
+  string resource_ciam_id = 5;
+  string resource_vin = 6;
+}
+
+message DataChangeEvent {
+  repeated Scopes scopes = 1;
+  string tracking_id = 2;  
+  int32 sequence_number = 3;
 }
