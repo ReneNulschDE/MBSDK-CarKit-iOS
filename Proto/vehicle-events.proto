@@ -5,6 +5,7 @@ import "user-events.proto";
 import "vehicle-commands.proto";
 import "protos.proto";
 import "vehicleapi.proto";
+import "google/protobuf/timestamp.proto";
 
 option java_package = "com.daimler.mbcarkit.proto";
 
@@ -145,6 +146,21 @@ message VehicleAttributeStatus {
     CHARING_COUPLER_ERROR_DETAILS_CHARGE_COUPLER_LOCK_DEFECT = 4;
   }
 
+  enum ChargingErrorImpossibleChangeTo400V {
+    CHARGING_ERROR_IMPOSSIBLE_CHANGE_TO_400V_NO_INFO = 0;
+    CHARGING_ERROR_IMPOSSIBLE_CHANGE_TO_400V_400V_IMPOSSIBLE_STUCK_TO_800V = 1;
+  }
+
+  enum ChargingErrorImpossibleChangeTo800V {
+    CHARGING_ERROR_IMPOSSIBLE_CHANGE_TO_800V_NO_INFO = 0;
+    CHARGING_ERROR_IMPOSSIBLE_CHANGE_TO_800V_800V_IMPOSSIBLE_STUCK_TO_400V = 1;
+  }
+
+  enum ChargingErrorVehicleNoSupport400V {
+    CHARGING_ERROR_VEHICLE_NO_SUPPORT_400V_NO_INFO = 0;
+    CHARGING_ERROR_VEHICLE_NO_SUPPORT_400V_400V_CHARGING_NOT_POSSIBLE = 1;
+  }
+
   // A list of service ids for which this attribute was sent
   // this field ist just used backend internally and will always
   // be empty when sent out to the client.
@@ -186,28 +202,46 @@ message VehicleAttributeStatus {
     PrecondState precond_state = 44;
     ChargingPowerRestrictions charging_power_restrictions = 55;
     ChargingCouplerErrorDetails charging_coupler_error_details = 56;
+    ChargingErrorVehicleNoSupport400V charging_error_vehicle_no_support_400v = 58;
+    ChargingErrorImpossibleChangeTo400V charging_error_impossible_change_to_400v = 59;
+    ChargingErrorImpossibleChangeTo800V charging_error_impossible_change_to_800v = 60;
+    ChargingPredictionSoc charging_prediction_soc = 80;
+    ChargingPredictionDepartureTime charging_prediction_departure_time = 81;
+    // ChargingScheduleActive charging_schedule_active = 82;
     ChargeFlaps charge_flaps = 84;
     ChargeInlets charge_inlets = 85;
+    
   }
 }
 
-enum ChargeInletsCouplerState {
-  CHARGE_INLETS_COUPLER_STATE_UNKNOWN = 0;
-  CHARGE_INLETS_COUPLER_STATE_PLUGGED = 1;
-  CHARGE_INLETS_COUPLER_STATE_VEHICLE_PLUGGED = 2;
-  CHARGE_INLETS_COUPLER_STATE_VEHICLE_NOT_PLUGGED = 3;
-  CHARGE_INLETS_COUPLER_STATE_DEFECT = 4;
+message ChargingPredictionSoc {
+  google.protobuf.Timestamp predicted_end_time = 1;
+  int64 predicted_electrical_energy_range = 2;
 }
 
-enum ChargeInletsLockState {
-  CHARGE_INLETS_LOCK_STATE_UNKNOWN = 0;
-  CHARGE_INLETS_LOCK_STATE_UNLOCKED = 1;
-  CHARGE_INLETS_LOCK_STATE_LOCKED = 2;
-  CHARGE_INLETS_LOCK_STATE_LOCK_STATE_NOT_CLEAR = 3;
-  CHARGE_INLETS_LOCK_STATE_NOT_AVAILABLE = 4;
+message ChargingPredictionDepartureTime {
+  int32 predicted_soc = 1;
+  int64 predicted_electrical_energy_range = 2;
 }
+
 
 message ChargeInletsEntry {
+  enum ChargeInletsCouplerState {
+    CHARGE_INLETS_COUPLER_STATE_UNKNOWN = 0;
+    CHARGE_INLETS_COUPLER_STATE_PLUGGED = 1;
+    CHARGE_INLETS_COUPLER_STATE_VEHICLE_PLUGGED = 2;
+    CHARGE_INLETS_COUPLER_STATE_VEHICLE_NOT_PLUGGED = 3;
+    CHARGE_INLETS_COUPLER_STATE_DEFECT = 4;
+  }
+
+  enum ChargeInletsLockState {
+    CHARGE_INLETS_LOCK_STATE_UNKNOWN = 0;
+    CHARGE_INLETS_LOCK_STATE_UNLOCKED = 1;
+    CHARGE_INLETS_LOCK_STATE_LOCKED = 2;
+    CHARGE_INLETS_LOCK_STATE_LOCK_STATE_NOT_CLEAR = 3;
+    CHARGE_INLETS_LOCK_STATE_NOT_AVAILABLE = 4;
+  }
+
   int64 id = 1;
   ChargeInletsCouplerState coupler_state = 2;
   ChargeInletsLockState lock_state = 3;
@@ -270,7 +304,13 @@ message PrecondState {
 }
 
 message ChargingPowerControl {
-  int32 charge_status = 1;
+  enum ChargingStatusForPowerControl {
+    NOT_DEFINED = 0;
+    DEACTIVATED = 1;
+    ACTIVATED = 2;
+  }
+  
+  ChargingStatusForPowerControl charge_status = 1;
   int32 ctrl_duration = 2;
   int32 ctrl_info = 3;
   int32 charge_power = 4;
