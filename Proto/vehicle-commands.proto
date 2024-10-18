@@ -628,7 +628,7 @@ message ChargingBreakClockTimerConfigureEntry {
   int32 endTimeHour = 2;
   int32 endTimeMinute = 3;
   int32 startTimeHour = 4;
-  int32 startTimeMin = 5;
+  int32 startTimeMinute = 5;
   int32 timerId = 6;
 }
 
