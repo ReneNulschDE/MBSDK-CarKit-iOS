@@ -46,6 +46,9 @@ message VehicleAPI {
         FINISHED = 5;
         // There was an error while executing the command process.
         FAILED = 6;
+        // added 20241105
+        ACKED_BY_APPTWIN = 7;
+        PIN_VALID = 8;
     }
 
     enum AttributeStatus {
