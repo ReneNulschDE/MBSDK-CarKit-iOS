@@ -91,7 +91,7 @@ message CommandRequest {
 
     AutomaticValetParkingActivate automatic_valet_parking_activate = 42;
 
-    ChargeFlapUnlock charge_flap_unlock = 45;
+    // ChargeFlapUnlock charge_flap_unlock = 45; # removed 1.51
     ChargeCouplerUnlock charge_coupler_unlock = 46;
 
     DeactivateVehicleKeys deactivate_vehicle_keys = 48;
@@ -608,7 +608,7 @@ message AutomaticValetParkingActivate {
   DriveType drive_type = 2 [ json_name = "driveType" ];
 }
 
-message ChargeFlapUnlock {}
+// message ChargeFlapUnlock {} # removed 1.51
 
 message ChargeCouplerUnlock {}
 
