@@ -109,8 +109,16 @@ message CommandRequest {
 }
 
 message ChargingConfigure {
-  int32 charging_program = 3;
-  int32 max_soc = 5;
+  enum ChargeProgram {
+    DEFAULT_CHARGE_PROGRAM = 0;
+    // Instant charge program should not be used
+    // INSTANT_CHARGE_PROGRAM = 1;
+    HOME_CHARGE_PROGRAM = 2;
+    WORK_CHARGE_PROGRAM = 3;
+  }
+  ChargeProgram charge_program = 3 [ json_name = "chargeprogram" ];
+
+  google.protobuf.Int32Value max_soc = 5;
 }
 
 message HvBatteryStartConditioning {}
