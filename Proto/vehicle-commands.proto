@@ -103,8 +103,14 @@ message CommandRequest {
     HvBatteryStartConditioning hv_battery_start_conditioning = 76;
     HvBatteryStopConditioning hv_battery_stop_conditioning = 77;
 
+    ChargingConfigure charging_configure = 72;
 
   }
+}
+
+message ChargingConfigure {
+  int32 charging_program = 3;
+  int32 max_soc = 5;
 }
 
 message HvBatteryStartConditioning {}
