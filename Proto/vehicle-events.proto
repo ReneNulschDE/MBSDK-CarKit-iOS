@@ -205,9 +205,11 @@ message VehicleAttributeStatus {
     SohCalibrationRequired soh_calibration_required = 48;
     SohCalibrationRequest soh_calibration_request = 50;
     SohCalibrationState soh_calibration_state = 51;
+    SohFavorableConditions soh_favorable_conditions = 53;
     SohCalibrationNotifications soh_calibration_notifications = 54;
     ChargingPowerRestrictions charging_power_restrictions = 55;
     ChargingCouplerErrorDetails charging_coupler_error_details = 56;
+    ChargingStopErrorDetails charging_stop_error_details = 57;
     ChargingErrorVehicleNoSupport400V charging_error_vehicle_no_support_400v = 58;
     ChargingErrorImpossibleChangeTo400V charging_error_impossible_change_to_400v = 59;
     ChargingErrorImpossibleChangeTo800V charging_error_impossible_change_to_800v = 60;
@@ -240,6 +242,17 @@ message VehicleAttributeStatus {
     HvBatteryPrecondRequestState hv_battery_precond_request_state = 92;
     HvBatteryPrecondState hv_battery_precond_state = 93;
   }
+}
+
+enum SohFavorableConditions {
+  SOH_FAVORABLE_CONDITIONS_NOT_FAVORABLE = 0;
+  SOH_FAVORABLE_CONDITIONS_FAVOURABLE_LEVEL_1 = 1;
+  SOH_FAVORABLE_CONDITIONS_FAVOURABLE_LEVEL_2 = 2;
+}
+
+enum ChargingStopErrorDetails {
+  CHARGING_STOP_ERROR_DETAILS_NO_INFO_OR_ERROR_MESSAGE = 0;
+  CHARGING_STOP_ERROR_DETAILS_CHARGE_STOP_BUTTON_DEFECT = 1;
 }
 
 enum SohCalibrationState {
