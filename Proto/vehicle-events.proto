@@ -199,6 +199,7 @@ message VehicleAttributeStatus {
     ChargingBreakClockTimerValue chargingbreak_clocktimer_value = 32;
     ChargingPowerControl charging_power_control = 33;
     TcuConnectionStateLowChannelStatus tcu_connection_state_low_channel = 38;
+    TurnOffEnginePreWarning turn_off_engine_pre_warning = 39;
     BatteryHealth battery_health = 43;
     PrecondState precond_state = 44;
     SohCalibrationNotifications soh_calibration_notifications = 54;
@@ -236,6 +237,12 @@ message VehicleAttributeStatus {
     HvBatteryPrecondRequestState hv_battery_precond_request_state = 92;
     HvBatteryPrecondState hv_battery_precond_state = 93;
   }
+}
+
+enum TurnOffEnginePreWarning {
+  NO_MESSAGE_ACTIVE = 0;
+  VEHICLE_READY_AUTOMATIC_SHUTDOWN_ON_LOCK = 1;
+  VEHICLE_READY_AUTOMATIC_SHUTDOWN_ON_TIMEOUT = 2;
 }
 
 enum SohCalibrationNotifications {
