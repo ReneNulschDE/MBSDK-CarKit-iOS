@@ -203,6 +203,7 @@ message VehicleAttributeStatus {
     BatteryHealth battery_health = 43;
     PrecondState precond_state = 44;
     SohCalibrationRequired soh_calibration_required = 48;
+    SocCalibrationRequest soc_calibration_request = 49;
     SohCalibrationRequest soh_calibration_request = 50;
     SohCalibrationState soh_calibration_state = 51;
     SohFavorableConditions soh_favorable_conditions = 53;
@@ -242,6 +243,12 @@ message VehicleAttributeStatus {
     HvBatteryPrecondRequestState hv_battery_precond_request_state = 92;
     HvBatteryPrecondState hv_battery_precond_state = 93;
   }
+}
+
+enum SocCalibrationRequest {
+  SOC_CALIBRATION_REQUEST_NO_REQUEST = 0;
+  SOC_CALIBRATION_REQUEST_LOW_REQUEST = 1;
+  SOC_CALIBRATION_REQUEST_HIGH_REQUEST = 2;
 }
 
 enum SohFavorableConditions {
