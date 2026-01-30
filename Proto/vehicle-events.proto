@@ -201,6 +201,7 @@ message VehicleAttributeStatus {
     TcuConnectionStateLowChannelStatus tcu_connection_state_low_channel = 38;
     BatteryHealth battery_health = 43;
     PrecondState precond_state = 44;
+    SohCalibrationNotifications soh_calibration_notifications = 54;
     ChargingPowerRestrictions charging_power_restrictions = 55;
     ChargingCouplerErrorDetails charging_coupler_error_details = 56;
     ChargingErrorVehicleNoSupport400V charging_error_vehicle_no_support_400v = 58;
@@ -235,6 +236,14 @@ message VehicleAttributeStatus {
     HvBatteryPrecondRequestState hv_battery_precond_request_state = 92;
     HvBatteryPrecondState hv_battery_precond_state = 93;
   }
+}
+
+enum SohCalibrationNotifications {
+  SOH_CALIBRATION_NOTIFICATIONS_NO_SOH_CALIBRATION_NECESSARY = 0;
+  SOH_CALIBRATION_NOTIFICATIONS_SEND_NOTIFICATION_LEVEL_1 = 1;
+  SOH_CALIBRATION_NOTIFICATIONS_SEND_NOTIFICATION_LEVEL_2 = 2;
+  SOH_CALIBRATION_NOTIFICATIONS_SEND_NOTIFICATION_LEVEL_3 = 3;
+  SOH_CALIBRATION_NOTIFICATIONS_SEND_NOTIFICATION_LEVEL_4 = 4;
 }
 
 enum HvBatteryPrecondStatesDischarging {
