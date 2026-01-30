@@ -202,6 +202,7 @@ message VehicleAttributeStatus {
     TurnOffEnginePreWarning turn_off_engine_pre_warning = 39;
     BatteryHealth battery_health = 43;
     PrecondState precond_state = 44;
+    SohCalibrationRequest soh_calibration_request = 50;
     SohCalibrationNotifications soh_calibration_notifications = 54;
     ChargingPowerRestrictions charging_power_restrictions = 55;
     ChargingCouplerErrorDetails charging_coupler_error_details = 56;
@@ -237,6 +238,12 @@ message VehicleAttributeStatus {
     HvBatteryPrecondRequestState hv_battery_precond_request_state = 92;
     HvBatteryPrecondState hv_battery_precond_state = 93;
   }
+}
+
+enum SohCalibrationRequest {
+  SOH_CALIBRATION_REQUEST_NO_REQUEST = 0;
+  SOH_CALIBRATION_REQUEST_LOW_REQUEST = 1;
+  SOH_CALIBRATION_REQUEST_HIGH_REQUEST = 2;
 }
 
 enum TurnOffEnginePreWarning {
