@@ -242,7 +242,28 @@ message VehicleAttributeStatus {
     HvBatteryPrecondAvailability hv_battery_precond_availability = 91;
     HvBatteryPrecondRequestState hv_battery_precond_request_state = 92;
     HvBatteryPrecondState hv_battery_precond_state = 93;
+    AmgStageModeState amg_stage_mode_state = 94;
+    AmgStageModeError amg_stage_mode_error = 95;
   }
+}
+
+message AmgStageModeError {
+  bool rear_spoiler = 1;
+  bool bow_wave = 2;
+  bool diffuser = 3;
+  bool light = 4;
+  bool mirror = 5;
+  bool sound = 6;
+  bool air_control_system = 7;
+  bool venturi = 8;
+}
+
+enum AmgStageModeState {
+  AMG_STAGE_MODE_STATE_STAGING_NOT_ACTIVE = 0;
+  AMG_STAGE_MODE_STATE_REVERTING_IN_PROGRESS = 1;
+  AMG_STAGE_MODE_STATE_TRANSFORMING_FINISHED_TRANSFORMED_POS = 2;
+  AMG_STAGE_MODE_STATE_TRANSFORMING_FINISHED_DEFAULT_POS = 3;
+  AMG_STAGE_MODE_STATE_TRANSFORMATION_ABORTED = 4;
 }
 
 enum SocCalibrationRequest {
