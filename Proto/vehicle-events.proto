@@ -204,6 +204,7 @@ message VehicleAttributeStatus {
     PrecondState precond_state = 44;
     SohCalibrationRequired soh_calibration_required = 48;
     SohCalibrationRequest soh_calibration_request = 50;
+    SohCalibrationState soh_calibration_state = 51;
     SohCalibrationNotifications soh_calibration_notifications = 54;
     ChargingPowerRestrictions charging_power_restrictions = 55;
     ChargingCouplerErrorDetails charging_coupler_error_details = 56;
@@ -239,6 +240,21 @@ message VehicleAttributeStatus {
     HvBatteryPrecondRequestState hv_battery_precond_request_state = 92;
     HvBatteryPrecondState hv_battery_precond_state = 93;
   }
+}
+
+enum SohCalibrationState {
+  SOH_CALIBRATION_STATE_NOT_ACTIVE = 0;
+  SOH_CALIBRATION_STATE_ACTIVE = 1;
+  SOH_CALIBRATION_STATE_SUCCESSFUL = 2;
+  SOH_CALIBRATION_STATE_BMS_UNDEFINED_ERROR = 3;
+  SOH_CALIBRATION_STATE_BMS_TEMPERATURE_ERROR = 4;
+  SOH_CALIBRATION_STATE_NO_CUSTOMER_PERMISSION_ERROR = 5;
+  SOH_CALIBRATION_STATE_NOT_ENOUGH_TIME_UNTIL_DEPARTURE_ERROR = 6;
+  SOH_CALIBRATION_STATE_USER_CANCELLED_ERROR = 7;
+  SOH_CALIBRATION_STATE_CHARGING_PROCESS_CANCELLED_ERROR = 8;
+  SOH_CALIBRATION_STATE_CHARGING_INFRASTRUCTURE_PROTOCOL_ERROR = 9;
+  SOH_CALIBRATION_STATE_CHARGING_INFRASTRUCTURE_POWER_REDUCTION_ERROR = 10;
+  SOH_CALIBRATION_STATE_UNDEFINED_ERROR = 11;
 }
 
 enum SohCalibrationRequired {
