@@ -199,6 +199,7 @@ message VehicleAttributeStatus {
     ChargingBreakClockTimerValue chargingbreak_clocktimer_value = 32;
     ChargingPowerControl charging_power_control = 33;
     TcuConnectionStateLowChannelStatus tcu_connection_state_low_channel = 38;
+    BatteryHealth battery_health = 43;
     PrecondState precond_state = 44;
     ChargingPowerRestrictions charging_power_restrictions = 55;
     ChargingCouplerErrorDetails charging_coupler_error_details = 56;
@@ -233,7 +234,6 @@ message VehicleAttributeStatus {
     HvBatteryPrecondAvailability hv_battery_precond_availability = 91;
     HvBatteryPrecondRequestState hv_battery_precond_request_state = 92;
     HvBatteryPrecondState hv_battery_precond_state = 93;
-
   }
 }
 
@@ -591,6 +591,20 @@ message ChargingPowerRestrictions {
 
 message ChargingBreakClockTimerValue {
   repeated ChargingBreakClockTimerEntry chargingbreak_clocktimer_entry = 1;
+}
+
+enum BatteryHealth {
+  BATTERY_GREEN_STATE = 0;
+  BATTERY_YELLOW_STATE = 1;
+  BATTERY_RED_STATE = 2;
+  ISSUE_WITH_DATA_EVALUATION = 3;
+  NO_EVALUATION_POSSIBLE = 4;
+  BATTERY_CHANGED = 5;
+  BATTERY_HEALTH_CANNOT_BE_CALCULATED = 6;
+  NO_MB_ORIGINAL_BATTERY = 7;
+  TECHNICAL_LIMITATION_FROM_VEHICLE = 8;
+  GENERAL_TECHNICAL_ERROR = 9;
+  GENERAL_PROCESS_ERROR = 10;
 }
 
 enum PrecondStateType {
