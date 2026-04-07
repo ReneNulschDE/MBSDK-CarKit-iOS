@@ -121,6 +121,24 @@ message CommandRequest {
 }
 
 message ChargingConfigure {
+  enum Action {
+    NO_ACTION_SELECTED = 0;
+    START = 1;
+    PAUSE = 2;
+    RESUME = 3;
+    STOP = 4;
+  }
+
+  enum DcChargingProfile {
+    NO_DC_CHARGING_PROFILE_SELECTED = 0;
+    STANDARD = 1;
+    SILENT_ECO = 2;
+    ULTRAFAST = 3;
+    PITSTOP = 4;
+    FAST_ECO_1 = 5;
+    FAST_ECO_2 = 6;
+  }
+  
   enum ChargeProgram {
     DEFAULT_CHARGE_PROGRAM = 0;
     // Instant charge program should not be used
@@ -128,9 +146,23 @@ message ChargingConfigure {
     HOME_CHARGE_PROGRAM = 2;
     WORK_CHARGE_PROGRAM = 3;
   }
-  ChargeProgram charge_program = 3 [ json_name = "chargeprogram" ];
 
+  enum SohCalibrationActivation {
+    NO_SOH_CALIBRATION_ACTIVATION_SELECTED = 0;
+    ON = 1;
+    OFF = 2;
+  }
+ 
+  Action action = 1;
+  DcChargingProfile dc_charging_profile = 2;
+  ChargeProgram charge_program = 3 [ json_name = "chargeprogram" ];
+  repeated google.protobuf.Int32Value inlet_id = 4;
   google.protobuf.Int32Value max_soc = 5;
+  google.protobuf.Int32Value min_soc = 6;
+  google.protobuf.Int32Value target_soc = 9;
+  google.protobuf.Int64Value target_time = 10;
+  SohCalibrationActivation soh_calibration_activation = 11;
+//  ChargeSchedule chargeSchedule = 13;
 }
 
 message HvBatteryStartConditioning {}
