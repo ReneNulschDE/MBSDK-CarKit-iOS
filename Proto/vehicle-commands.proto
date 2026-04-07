@@ -116,6 +116,7 @@ message CommandRequest {
     StagemodeStop stagemode_stop = 75;
     HvBatteryStartConditioning hv_battery_start_conditioning = 76;
     HvBatteryStopConditioning hv_battery_stop_conditioning = 77;
+    RemoteSeatBallettConfigure remote_seat_ballet_configure = 78;
 
   }
 }
@@ -167,6 +168,8 @@ message ChargingConfigure {
 
 message HvBatteryStartConditioning {}
 message HvBatteryStopConditioning {}
+
+message RemoteSeatBallettConfigure {}
 
 message DeactivateVehicleKeys {
   string pin = 1;
