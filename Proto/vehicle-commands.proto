@@ -68,9 +68,9 @@ message CommandRequest {
     ChargeProgramConfigure charge_program_configure = 34;
     ChargeControlConfigure charge_control_configure = 40;
 
-    ChargeOptConfigure charge_opt_configure = 29;
-    ChargeOptStart charge_opt_start = 30;
-    ChargeOptStop charge_opt_stop = 31;
+    // ChargeOptConfigure charge_opt_configure = 29;
+    // ChargeOptStart charge_opt_start = 30;
+    // ChargeOptStop charge_opt_stop = 31;
 
     TemperatureConfigure temperature_configure = 32;
 
@@ -89,15 +89,18 @@ message CommandRequest {
     TheftalarmStart theftalarm_start = 38;
     TheftalarmStop theftalarm_stop = 39;
 
-    AutomaticValetParkingActivate automatic_valet_parking_activate = 42;
+    // AutomaticValetParkingActivate automatic_valet_parking_activate = 42;
 
     ChargeFlapUnlock charge_flap_unlock = 45;
-    ChargeCouplerUnlock charge_coupler_unlock = 46;
+    // ChargeCouplerUnlock charge_coupler_unlock = 46;
 
     DeactivateVehicleKeys deactivate_vehicle_keys = 48;
     ActivateVehicleKeys activate_vehicle_keys = 49;
 
     ChargingBreakClocktimerConfigure chargingbreak_clocktimer_configure = 50;
+
+    ChargeFlapOpen charge_flap_open = 59;
+    ChargeCouplerStop charge_coupler_stop = 60;
 
     SelectiveKeyDeactivation selective_key_deactivation = 61;
     SunroofBlindsMove sunroof_blinds_move = 62;
@@ -116,7 +119,7 @@ message CommandRequest {
     StagemodeStop stagemode_stop = 75;
     HvBatteryStartConditioning hv_battery_start_conditioning = 76;
     HvBatteryStopConditioning hv_battery_stop_conditioning = 77;
-    RemoteSeatBallettConfigure remote_seat_ballet_configure = 78;
+    RemoteSeatBalletConfigure remote_seat_ballet_configure = 78;
 
   }
 }
@@ -169,7 +172,16 @@ message ChargingConfigure {
 message HvBatteryStartConditioning {}
 message HvBatteryStopConditioning {}
 
-message RemoteSeatBallettConfigure {}
+message RemoteSeatBalletConfigure {
+  enum PresetPosition {
+    UNKNOWN = 0;
+    BAGGAGE_MODE = 7;
+    STANDARD_MODE = 39;
+    EXECUTIVE_MODE = 45;
+    PEOPLE_AND_BAGGAGE_MODE = 47;
+  }
+  PresetPosition preset_position = 1 [ json_name = "preset_position" ];
+}
 
 message DeactivateVehicleKeys {
   string pin = 1;
@@ -771,4 +783,13 @@ message ClockTimerConfigureEntry {
   int64 start_time_min = 5;
   int64 timer_id = 6;
   repeated Day days = 7;
+}
+
+
+message ChargeFlapOpen {
+  string pin = 1;
+}
+
+message ChargeCouplerStop {
+  string pin = 1;
 }

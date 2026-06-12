@@ -161,17 +161,20 @@ message VehicleAttributeStatus {
     CHARGING_ERROR_VEHICLE_NO_SUPPORT_400V_400V_CHARGING_NOT_POSSIBLE = 1;
   }
 
-  // A list of service ids for which this attribute was sent
-  // this field ist just used backend internally and will always
-  // be empty when sent out to the client.
-  repeated int32 service_ids = 30;
+
+  //   tag 15 = SpeedDistanceUnit speed_distance_unit (was deprecated, replaced by speed_unit/distance_unit)
+  //   tag 21 = WeekdayTariffValue weekday_tariff_value
+  //   tag 22 = WeekendTariffValue weekend_tariff_value
+  //   tag 28 = EcoHistogramValue eco_histogram_value
+  //   tag 30 = repeated int32 service_ids (was backend-internal only)
+  //   tag 33 = ChargingPowerControl charging_power_control
+  reserved 15, 21, 22, 28, 30, 33;
 
   string display_value = 11;
   oneof display_unit {
     CombustionConsumptionUnit combustion_consumption_unit = 12;
     GasConsumptionUnit gas_consumption_unit = 13;
     ElectricityConsumptionUnit electricity_consumption_unit = 14;
-    SpeedDistanceUnit speed_distance_unit = 15 [ deprecated = true ]; // use speed unit / length unit instead
     SpeedUnit speed_unit = 25;
     DistanceUnit distance_unit = 26;
     TemperatureUnit temperature_unit = 16;
@@ -188,16 +191,12 @@ message VehicleAttributeStatus {
     bool nil_value = 8;
     string unsupported_value = 9;
     TemperaturePointsValue temperature_points_value = 20;
-    WeekdayTariffValue weekday_tariff_value = 21;
-    WeekendTariffValue weekend_tariff_value = 22;
     StateOfChargeProfileValue state_of_charge_profile_value = 23;
     WeeklySettingsHeadUnitValue weekly_settings_head_unit_value = 24;
     SpeedAlertConfigurationValue speed_alert_configuration_value = 27;
-    EcoHistogramValue eco_histogram_value = 28;
     WeeklyProfileValue weekly_profile_value = 29;
     ChargeProgramsValue charge_programs_value = 31;
     ChargingBreakClockTimerValue chargingbreak_clocktimer_value = 32;
-    ChargingPowerControl charging_power_control = 33;
     KeylineActivationStateValue keyline_activation_state_value = 36;
     NextDepartureTimeValue next_departure_time_value = 37;
     TcuConnectionStateLowChannelStatus tcu_connection_state_low_channel = 38;
@@ -784,17 +783,19 @@ enum ChargingCompatibilityError {
   CHARGING_COMPATIBILITY_PARTIAL_COMPATIBILITY = 3;
   CHARGING_COMPATIBILITY_PARTIAL_COMPATIBILITY_WITH_ADDITIONAL_DEVICE = 4;
   CHARGING_COMPATIBILITY_ERROR_NO_COMPATIBILITY = 5;
+  CHARGING_COMPATIBILITY_ERROR_BIDI_DISCHARGING_NOT_COMPATIBLE = 6;
+  CHARGING_COMPATIBILITY_ERROR_EVSE_MINIMUM_CURRENT = 7;
 }
-
 
 enum ChargingFlapErrorDetails {
   CHARGING_FLAP_ERROR_DETAILS_NO_INFO_OR_ERROR_MESSAGE = 0;
   CHARGING_FLAP_ERROR_DETAILS_OPENING_DEFECT_SEARCH_WORKSHOP = 1;
   CHARGING_FLAP_ERROR_DETAILS_BLOCKED = 2;
-  CHARGING_FLAP_ERROR_DETAILS_DRIVING_POSITION_NOT_PARKING = 3;
-  CHARGING_FLAP_ERROR_DETAILS_STATE_UNKNOWN = 4;
-  CHARGING_FLAP_ERROR_DETAILS_PRESSED_DETECTION_DEFECT = 5;
-  CHARGING_FLAP_ERROR_DETAILS_CLOSING_OF_AUTOMATED_FLAP_DEFECT = 6;
+  reserved 3;
+  CHARGING_FLAP_ERROR_DETAILS_DRIVING_POSITION_NOT_PARKING = 4;
+  CHARGING_FLAP_ERROR_DETAILS_STATE_UNKNOWN = 5;
+  CHARGING_FLAP_ERROR_DETAILS_PRESSED_DETECTION_DEFECT = 6;
+  CHARGING_FLAP_ERROR_DETAILS_CLOSING_OF_AUTOMATED_FLAP_DEFECT = 7;
 }
 
 message ChargingScheduleRequested {
@@ -1561,8 +1562,33 @@ enum ChargeFlapStatus {
 
 enum ChargingErrorDetails {
   CHARGING_ERROR_DETAILS_NO_ERROR = 0;
-  CHARGING_ERROR_DETAILS_AC_FAILURE = 1;
-  CHARGING_ERROR_DETAILS_DC_FAILURE = 2;
+  CHARGING_ERROR_DETAILS_INLET_UNLOCK_ERROR = 1;
+  CHARGING_ERROR_DETAILS_EVSE_DEFECT_CHANGE_CHARGING_STATION = 2;
+  CHARGING_ERROR_DETAILS_EVSE_DEFECT_MALFUNCTION_OF_CHARGING_STATION = 3;
+  CHARGING_ERROR_DETAILS_CHARGE_TYPE_NOT_AVAILABLE = 4;
+  CHARGING_ERROR_DETAILS_CHADEMO_INLET_UNLOCK_ERROR = 5;
+  CHARGING_ERROR_DETAILS_DC_INTERNAL_COMPONENT_DEFECT = 6;
+  CHARGING_ERROR_DETAILS_AC_INTERNAL_COMPONENT_DEFECT = 7;
+  CHARGING_ERROR_DETAILS_AUTHORIZATION_FAILED = 8;
+  CHARGING_ERROR_DETAILS_MESSAGE_9_RESERVED = 9;
+  CHARGING_ERROR_DETAILS_MESSAGE_10_RESERVED = 10;
+  CHARGING_ERROR_DETAILS_MESSAGE_11_RESERVED = 11;
+  CHARGING_ERROR_DETAILS_MESSAGE_12_RESERVED = 12;
+  CHARGING_ERROR_DETAILS_MESSAGE_13_RESERVED = 13;
+  CHARGING_ERROR_DETAILS_NO_INFO_OR_ERROR_MESSAGE = 14;
+  CHARGING_ERROR_DETAILS_CHARGING_SYSTEM_DEFECT = 15;
+  CHARGING_ERROR_DETAILS_DC_CHARGING_DEFECT = 16;
+  CHARGING_ERROR_DETAILS_AC_CHARGING_DEFECT = 17;
+  CHARGING_ERROR_DETAILS_REPLUG_CHARGING_CABLE = 18;
+  CHARGING_ERROR_DETAILS_EVSE_DOES_NOT_RESPOND_RECONNECT = 19;
+  CHARGING_ERROR_DETAILS_EVSE_DOES_NOT_RESPOND_USE_OTHER_AUTHENTIFICATION = 20;
+  CHARGING_ERROR_DETAILS_EVSE_DOES_NOT_RESPOND_EVSE_DEFECT = 21;
+  CHARGING_ERROR_DETAILS_EVSE_DOES_NOT_RESPOND_TRY_OTHER_EVSE = 22;
+  CHARGING_ERROR_DETAILS_EV_INITIATED_SHUTDOWN_LONG_TIME_USAGE_LIMIT_REACHED = 23;
+  CHARGING_ERROR_DETAILS_NO_VALID_PLUG_AND_CHARGE_CERTIFICATE_AVAILABLE = 24;
+  CHARGING_ERROR_DETAILS_UNKNOWN_CHARGING_ERROR_OCCURRED = 25;
+  CHARGING_ERROR_DETAILS_NACS_ERROR_CHARGING_STATION_NOT_COMPATIBLE = 26;
+  CHARGING_ERROR_DETAILS_PLAYPROTECTION_ACTIVE = 27;
 }
 
 // --- Vehicle State ---
@@ -2185,8 +2211,85 @@ message SpeedAlertConfArrayAttribute { repeated SpeedAlertConfiguration value = 
 message TemperaturePointsArrayAttribute { repeated TemperaturePoint value = 1; VSUMetadata metadata = 2; }
 message WeeklySetHUArrayAttribute { repeated WeeklySetting value = 1; VSUMetadata metadata = 2; }
 
+
+enum SeatballetPositionState {
+  SEATBALLET_POSITION_STATE_OFF = 0;
+  SEATBALLET_POSITION_STATE_RUN = 1;
+  SEATBALLET_POSITION_STATE_ABORT = 2;
+  SEATBALLET_POSITION_STATE_FINISHED = 3;
+  SEATBALLET_POSITION_STATE_GET = 4;
+}
+
+enum ChildPresenceDetectionOccupancyStatus {
+  CHILD_PRESENCE_DETECTION_OCCUPANCY_STATUS_IDLE = 0;
+  CHILD_PRESENCE_DETECTION_OCCUPANCY_STATUS_PENDING = 1;
+  CHILD_PRESENCE_DETECTION_OCCUPANCY_STATUS_EMPTY = 2;
+  CHILD_PRESENCE_DETECTION_OCCUPANCY_STATUS_OCCUPIED_CHILD = 3;
+  CHILD_PRESENCE_DETECTION_OCCUPANCY_STATUS_OCCUPIED_ADULT = 4;
+}
+
+message PetMode {
+  enum Status {
+    PET_MODE_STATUS_INACTIVE = 0;
+    PET_MODE_STATUS_PARTIALLY_ACTIVE = 1;
+    PET_MODE_STATUS_ACTIVE = 2;
+    PET_MODE_STATUS_RUNTIME_EXCEEDED = 3;
+    PET_MODE_STATUS_RANGE_EXCEEDED = 4;
+    PET_MODE_STATUS_MALFUNCTION = 5;
+  }
+
+  message Info {
+    enum Level {
+      PET_MODE_INFO_LEVEL_INFO = 0;
+      PET_MODE_INFO_LEVEL_WARN = 1;
+      PET_MODE_INFO_LEVEL_ERROR = 2;
+    }
+
+    enum Type {
+      PET_MODE_INFO_TYPE_TEMPERATURE_WARNING = 0;
+      PET_MODE_INFO_TYPE_RUNTIME_WARNING_10_MINUTES = 1;
+      PET_MODE_INFO_TYPE_RUNTIME_WARNING_30_MINUTES = 2;
+      PET_MODE_INFO_TYPE_RUNTIME_WARNING_60_MINUTES = 3;
+      PET_MODE_INFO_TYPE_RUNTIME_WARNING_90_MINUTES = 4;
+      PET_MODE_INFO_TYPE_RUNTIME_WARNING_120_MINUTES = 5;
+      PET_MODE_INFO_TYPE_RUNTIME_WARNING_150_MINUTES = 6;
+      PET_MODE_INFO_TYPE_RUNTIME_WARNING_180_MINUTES = 7;
+      PET_MODE_INFO_TYPE_RUNTIME_NOTICE_60_MINUTES = 8;
+      PET_MODE_INFO_TYPE_RUNTIME_NOTICE_90_MINUTES = 9;
+      PET_MODE_INFO_TYPE_RUNTIME_NOTICE_120_MINUTES = 10;
+      PET_MODE_INFO_TYPE_RUNTIME_NOTICE_150_MINUTES = 11;
+      PET_MODE_INFO_TYPE_RANGE_WARNING_55_KILOMETERS = 12;
+      PET_MODE_INFO_TYPE_RANGE_WARNING_50_KILOMETERS = 13;
+      PET_MODE_INFO_TYPE_ERROR_WARNING = 14;
+    }
+
+    Level level = 1;
+    Type type = 2;
+  }
+
+  Status status = 1;
+  google.protobuf.Timestamp endtime = 2;
+  Info info = 3;
+  google.protobuf.Timestamp starttime = 4;
+}
+
+message PetModeObjectAttribute {
+  PetMode value = 1;
+  VSUMetadata metadata = 2;
+}
+
+message SeatballetPositionStateEnumAttribute {
+  SeatballetPositionState value = 1;
+  VSUMetadata metadata = 2;
+}
+
+message ChildPresenceDetectionOccupancyStatusEnumAttribute {
+  ChildPresenceDetectionOccupancyStatus value = 1;
+  VSUMetadata metadata = 2;
+}
+
 // ===================================================================
-// VehicleStatusUpdate - Typed vehicle status message (272 fields)
+// VehicleStatusUpdate - Typed vehicle status message (275 fields)
 // ===================================================================
 
 message VehicleStatusUpdate {
@@ -2462,4 +2565,7 @@ message VehicleStatusUpdate {
   Int64Attribute tire_press_meas_timestamp = 270;
   VehiclePositionErrorCodeEnumAttribute vehicle_position_error_code = 271;
   WindowStatusOverallEnumAttribute window_status_overall = 272;
+  PetModeObjectAttribute pet_mode = 273;
+  SeatballetPositionStateEnumAttribute seatballet_position_state = 274;
+  ChildPresenceDetectionOccupancyStatusEnumAttribute child_presence_detection_occupancy_status = 275;
 }
