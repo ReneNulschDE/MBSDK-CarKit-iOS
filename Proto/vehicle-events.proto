@@ -6,6 +6,7 @@ import "vehicle-commands.proto";
 import "protos.proto";
 import "vehicleapi.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 
 option java_package = "com.daimler.mbcarkit.proto";
 
@@ -874,8 +875,11 @@ message ChargingPredictionSoc {
 }
 
 message ChargingPredictionDepartureTime {
-  int32 predicted_soc = 1;
+  // Backend (MBMobileSDK 1.68) deprecated the int32 field on tag 1 and added a
+  // wrapper-typed predicted_soc on tag 3.
+  int32 deprecated_predicted_soc = 1 [deprecated = true];
   int64 predicted_electrical_energy_range = 2;
+  google.protobuf.Int32Value predicted_soc = 3;
 }
 
 
@@ -967,8 +971,10 @@ enum PrecondStateType {
 
 message PrecondState {
   bool activation_state = 1;
-  bool precond_immediate_support = 2;
-  repeated PrecondStateType precond_state_types = 3;
+  // NOTE: tags 2 and 3 were swapped vs. the backend (MBMobileSDK 1.68). Aligned to Android:
+  //   tag 2 = precond_state_types (repeated), tag 3 = precond_immediate_support (bool).
+  repeated PrecondStateType precond_state_types = 2;
+  bool precond_immediate_support = 3;
 }
 
 message ChargingPowerControl {
@@ -1034,7 +1040,10 @@ message ChargeProgramParameters {
   bool weekly_profile = 5 [ json_name = "weeklyprofile" ];
   bool clockTimer = 6 [ json_name = "clockTimer" ];
   int32 max_charging_current = 7 [ json_name = "MaxChargingCurrent" ];
-  bool eco_charging = 8 [ json_name = "EcoCharging" ];
+  // Field 8 was previously a `bool eco_charging`. The backend moved it to tag 9
+  // and changed the type to the BoolValue wrapper, so tag 8 is reserved to avoid reuse.
+  reserved 8;
+  google.protobuf.BoolValue eco_charging = 9 [ json_name = "EcoCharging" ];
 }
 
 // Same as VehicleAPI.AttributeStatus but with slightly different names. The VehicleAPI.AttributeStatus enum values
@@ -1063,6 +1072,9 @@ message WeeklyProfileValue {
   int32 current_number_of_time_profiles = 5 [ json_name = "currentNumberOfTimeProfiles" ];
 
   repeated VVRTimeProfile time_profiles = 6 [ json_name = "timeProfiles" ];
+
+  // Added in backend (MBMobileSDK 1.68). Tag 7 stays vacant to match Android.
+  int32 max_number_of_time_profiles_user = 8 [ json_name = "maxNumberOfTimeProfilesUser" ];
 }
 
 // VVRTimeProfile is almost identical to the "TimeProfile" message with the exception that the identifier is not optional.
@@ -1070,22 +1082,45 @@ message VVRTimeProfile {
   // unique id of this time profile entry
   int32 identifier = 1 [ json_name = "id" ];
 
-  // Hour after midnight range [0, 23]
-  int32 hour = 2 [json_name = "hour" ];
-
-  // Minute after full hour range [0, 59]
-  int32 minute = 3 [json_name = "min" ];
+  // Backend (MBMobileSDK 1.68) migrated hour/minute/active to wrapper types on tags 7/8/9.
+  // The old scalar tags 2 (int32 hour), 3 (int32 minute) and 5 (bool active) are reserved.
+  reserved 2, 3, 5;
 
   // Days for which the above time should be applied
   repeated TimeProfileDay days = 4 [json_name = "day" ];
-
-  // Whether this profile entry is active or not
-  bool active = 5 [json_name = "active" ];
 
   // If a timeProfile is changed or added the respective applicationId must be provided by SDK
   //   11 = Internal Apps
   //   12 = External Apps
   int32 application_identifier = 6 [ json_name = "applicationId" ];
+
+  // Hour after midnight range [0, 23]
+  google.protobuf.Int32Value hour = 7 [ json_name = "hour" ];
+
+  // Minute after full hour range [0, 59]
+  google.protobuf.Int32Value minute = 8 [ json_name = "min" ];
+
+  // Whether this profile entry is active or not
+  google.protobuf.BoolValue active = 9 [ json_name = "active" ];
+
+  // Whether this profile entry was learned automatically
+  bool is_learned_time = 10 [ json_name = "isLearnedTime" ];
+
+  repeated ActionList action_list = 11 [ json_name = "actionList" ];
+
+  WeeklyProfileScheduleType schedule_type = 12 [ json_name = "scheduleType" ];
+
+  message ActionList {
+    bool charging = 1 [ json_name = "charging" ];
+    bool precond = 2 [ json_name = "precond" ];
+    bool battery_precond = 3 [ json_name = "batteryPrecond" ];
+  }
+
+  enum WeeklyProfileScheduleType {
+    WEEKLY_PROFILE_SCHEDULE_TYPE_NON_RECURRING = 0;
+    WEEKLY_PROFILE_SCHEDULE_TYPE_RECURRING = 1;
+    WEEKLY_PROFILE_SCHEDULE_TYPE_NON_RECURRING_AUTO_DELETE = 2;
+  }
 }
 
 message EcoHistogramValue {
@@ -1130,6 +1165,7 @@ message TemperaturePoint {
   string zone = 1;
   double temperature = 2;
   string temperature_display_value = 3;
+  google.protobuf.BoolValue active = 4 [ json_name = "active" ];
 }
 
 message WeekdayTariffValue {
