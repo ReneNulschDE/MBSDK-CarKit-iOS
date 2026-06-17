@@ -1071,8 +1071,57 @@ message WeeklyProfileValue {
 
   repeated VVRTimeProfile time_profiles = 6 [ json_name = "timeProfiles" ];
 
-  // Added in backend (MBMobileSDK 1.68). Tag 7 stays vacant to match Android.
+  // Tag 7 vacant to match the legacy/VEP flat layout. VSU pushes use the
+  // separate WeeklyProfile message (defined below) with a different tag map.
   int32 max_number_of_time_profiles_user = 8 [ json_name = "maxNumberOfTimeProfilesUser" ];
+}
+
+// VSU-side layout, distinct from the flat WeeklyProfileValue used by VEP.
+// The backend pushes this via WeeklyProfileObjectAttribute. Tag numbering
+// matches the Android SDK; tags 4/5/6 are shifted vs. WeeklyProfileValue and
+// tag 7 carries the repeated TimeProfile list (not present in the flat form).
+message WeeklyProfile {
+  bool  single_time_profile_entries_activatable = 1 [ json_name = "singleTimeProfileEntriesActivatable" ];
+  int32 max_number_of_weekly_time_profile_slots = 2 [ json_name = "maxNumberOfWeeklyTimeProfileSlots" ];
+  int32 max_number_of_time_profiles             = 3 [ json_name = "maxNumberOfTimeProfiles" ];
+  int32 max_number_of_time_profiles_user        = 4 [ json_name = "maxNumberOfTimeProfilesUser" ];
+  int32 current_number_of_time_profile_slots    = 5 [ json_name = "currentNumberOfTimeProfileSlots" ];
+  int32 current_number_of_time_profiles         = 6 [ json_name = "currentNumberOfTimeProfiles" ];
+  repeated TimeProfile time_profiles            = 7 [ json_name = "timeProfiles" ];
+
+  message TimeProfile {
+    int32  id                     = 1 [ json_name = "id" ];
+    int32  hour                   = 2 [ json_name = "hour" ];
+    int32  minute                 = 3 [ json_name = "min" ];
+    repeated Weekday days         = 4 [ json_name = "day", packed = true ];
+    bool   active                 = 5 [ json_name = "active" ];
+    int32  application_identifier = 6 [ json_name = "applicationId" ];
+    repeated ActionListEntry action_list = 7 [ json_name = "actionList" ];
+    ScheduleType schedule_type    = 8 [ json_name = "scheduleType" ];
+    bool   is_learned_time        = 9 [ json_name = "isLearnedTime" ];
+
+    message ActionListEntry {
+      bool charging        = 1 [ json_name = "charging" ];
+      bool precond         = 2 [ json_name = "precond" ];
+      bool battery_precond = 3 [ json_name = "batteryPrecond" ];
+    }
+
+    enum Weekday {
+      MONDAY = 0;
+      TUESDAY = 1;
+      WEDNESDAY = 2;
+      THURSDAY = 3;
+      FRIDAY = 4;
+      SATURDAY = 5;
+      SUNDAY = 6;
+    }
+
+    enum ScheduleType {
+      WEEKLY_PROFILE_SCHEDULE_TYPE_NON_RECURRING = 0;
+      WEEKLY_PROFILE_SCHEDULE_TYPE_RECURRING = 1;
+      WEEKLY_PROFILE_SCHEDULE_TYPE_NON_RECURRING_AUTO_DELETE = 2;
+    }
+  }
 }
 
 // VVRTimeProfile is almost identical to the "TimeProfile" message with the exception that the identifier is not optional.
@@ -2228,7 +2277,7 @@ message NextDepartureTimeObjectAttribute {
 message PrecondOperabilityStateObjectAttribute { PrecondOperabilityState value = 1; VSUMetadata metadata = 2; }
 message PrecondStateObjectAttribute { PrecondState value = 1; VSUMetadata metadata = 2; }
 message RemoteUpdateStartStatusObjectAttribute { RemoteUpdateStartStatus value = 1; VSUMetadata metadata = 2; }
-message WeeklyProfileObjectAttribute { WeeklyProfileValue value = 1; VSUMetadata metadata = 2; }
+message WeeklyProfileObjectAttribute { WeeklyProfile value = 1; VSUMetadata metadata = 2; }
 
 // ===================================================================
 // Array Attribute Wrapper Types
