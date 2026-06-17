@@ -1040,10 +1040,8 @@ message ChargeProgramParameters {
   bool weekly_profile = 5 [ json_name = "weeklyprofile" ];
   bool clockTimer = 6 [ json_name = "clockTimer" ];
   int32 max_charging_current = 7 [ json_name = "MaxChargingCurrent" ];
-  // Field 8 was previously a `bool eco_charging`. The backend moved it to tag 9
-  // and changed the type to the BoolValue wrapper, so tag 8 is reserved to avoid reuse.
-  reserved 8;
-  google.protobuf.BoolValue eco_charging = 9 [ json_name = "EcoCharging" ];
+  bool eco_charging = 8 [ json_name = "EcoCharging" ];
+  reserved 9;
 }
 
 // Same as VehicleAPI.AttributeStatus but with slightly different names. The VehicleAPI.AttributeStatus enum values
