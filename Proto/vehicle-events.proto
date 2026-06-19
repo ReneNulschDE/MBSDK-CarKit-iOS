@@ -1472,6 +1472,18 @@ message DoubleSpeedAttribute {
   string display_value = 4;
 }
 
+message Int64SpeedAttribute {
+  int64 value = 1;
+  VSUMetadata metadata = 2;
+  VehicleAttributeStatus.SpeedUnit unit = 3;
+  string display_value = 4;
+}
+
+message SpeedAlertConf {
+  google.protobuf.Timestamp end_timestamp = 1;
+  Int64SpeedAttribute threshold = 2;
+}
+
 message DoubleCombustionConsumptionAttribute {
   double value = 1;
   VSUMetadata metadata = 2;
@@ -2290,7 +2302,7 @@ message ChargeProgramsArrayAttribute { repeated ChargeProgramParameters value = 
 message ChargingPowerRestrictionArrayAttribute { repeated ChargingPowerRestriction value = 1; VSUMetadata metadata = 2; }
 message ChargingTimerArrayAttribute { repeated ChargingTimerEntry value = 1; VSUMetadata metadata = 2; }
 message SocprofileArrayAttribute { repeated StateOfCharge value = 1; VSUMetadata metadata = 2; }
-message SpeedAlertConfArrayAttribute { repeated SpeedAlertConfiguration value = 1; VSUMetadata metadata = 2; }
+message SpeedAlertConfArrayAttribute { repeated SpeedAlertConf value = 1; VSUMetadata metadata = 2; }
 message TemperaturePointsArrayAttribute { repeated TemperaturePoint value = 1; VSUMetadata metadata = 2; }
 message WeeklySetHUArrayAttribute { repeated WeeklySetting value = 1; VSUMetadata metadata = 2; }
 
