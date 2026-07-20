@@ -2303,7 +2303,28 @@ message ChargingPowerRestrictionArrayAttribute { repeated ChargingPowerRestricti
 message ChargingTimerArrayAttribute { repeated ChargingTimerEntry value = 1; VSUMetadata metadata = 2; }
 message SocprofileArrayAttribute { repeated StateOfCharge value = 1; VSUMetadata metadata = 2; }
 message SpeedAlertConfArrayAttribute { repeated SpeedAlertConf value = 1; VSUMetadata metadata = 2; }
-message TemperaturePointsArrayAttribute { repeated TemperaturePoint value = 1; VSUMetadata metadata = 2; }
+message TemperaturePointsArrayAttribute {
+  message TemperaturePoint {
+    // 0-based, ordered front/rear then left/center/right. NOTE: this differs from the
+    // Zone enum in vehicle-commands.proto (1-based, UNKNOWN=0, left/right/center).
+    enum Zone {
+      FRONT_LEFT = 0;
+      FRONT_CENTER = 1;
+      FRONT_RIGHT = 2;
+      REAR_LEFT = 3;
+      REAR_CENTER = 4;
+      REAR_RIGHT = 5;
+      REAR_2_LEFT = 6;
+      REAR_2_CENTER = 7;
+      REAR_2_RIGHT = 8;
+    }
+    Zone zone = 1 [ json_name = "zone" ];
+    DoubleTemperatureAttribute temperature = 2 [ json_name = "temperature" ];
+    bool active = 3 [ json_name = "active" ];
+  }
+  repeated TemperaturePoint value = 1;
+  VSUMetadata metadata = 2;
+}
 message WeeklySetHUArrayAttribute { repeated WeeklySetting value = 1; VSUMetadata metadata = 2; }
 
 
