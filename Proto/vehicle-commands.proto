@@ -142,31 +142,97 @@ message ChargingConfigure {
     FAST_ECO_1 = 5;
     FAST_ECO_2 = 6;
   }
-  
-  enum ChargeProgram {
-    DEFAULT_CHARGE_PROGRAM = 0;
-    // Instant charge program should not be used
-    // INSTANT_CHARGE_PROGRAM = 1;
-    HOME_CHARGE_PROGRAM = 2;
-    WORK_CHARGE_PROGRAM = 3;
-  }
 
   enum SohCalibrationActivation {
     NO_SOH_CALIBRATION_ACTIVATION_SELECTED = 0;
     ON = 1;
     OFF = 2;
   }
- 
+
+  enum BptRequest {
+    NO_BPT_REQUEST_SELECTED = 0;
+    BPT_REQUEST_V2X_DISABLED = 1;
+    BPT_REQUEST_V2X_EXTERNAL_CONTROL_ENABLED = 2;
+    BPT_REQUEST_V2X_VEHICLE_CONTROL_ENABLED = 3;
+  }
+
+  enum EmergencyPowerSupply {
+    NO_EMERGENCY_POWER_SUPPLY_SELECTED = 0;
+    EMERGENCY_POWER_SUPPLY_OFF = 1;
+    EMERGENCY_POWER_SUPPLY_ON = 2;
+  }
+
+  enum ActionEvsePairing {
+    NO_ACTION_EVSE_PAIRING_SELECTED = 0;
+    ACTION_EVSE_PAIRING_START = 1;
+    ACTION_EVSE_PAIRING_STOP = 2;
+  }
+
   Action action = 1;
   DcChargingProfile dc_charging_profile = 2;
-  ChargeProgram charge_program = 3 [ json_name = "chargeprogram" ];
+  google.protobuf.Int32Value charging_program = 3 [ json_name = "chargingProgram" ];
   repeated google.protobuf.Int32Value inlet_id = 4;
   google.protobuf.Int32Value max_soc = 5;
   google.protobuf.Int32Value min_soc = 6;
   google.protobuf.Int32Value target_soc = 9;
   google.protobuf.Int64Value target_time = 10;
   SohCalibrationActivation soh_calibration_activation = 11;
-//  ChargeSchedule chargeSchedule = 13;
+  ChargeSchedule chargeSchedule = 13 [ json_name = "chargeSchedule" ];
+  google.protobuf.Int32Value charging_location_id = 14 [ json_name = "chargingLocationId" ];
+  BptRequest bpt_request = 15 [ json_name = "bptRequest" ];
+  EmergencyPowerSupply emergency_power_supply = 16 [ json_name = "emergencyPowerSupply" ];
+  ActionEvsePairing action_evse_pairing = 17 [ json_name = "actionEvsePairing" ];
+
+  message ChargeSchedule {
+    enum UseCaseId {
+      NO_USE_CASE_SELECTED = 0;
+      MERCEDES_INTELLIGENT_CHARGING = 1;
+      BETA_COMMUNITY_CHARGING = 2;
+      SOLAR_CHARGING = 3;
+      GREEN_CHARGING = 4;
+      EFFICIENT_CHARGING = 5;
+      ECO_FRIENDLY_CHARGING = 6;
+      SUSTAINABLE_CHARGING = 7;
+      INTELLIGENT_CHARGING = 8;
+      WORKPLACE_CHARGING_PLAN = 9;
+      HOME_CHARGING_PLAN = 10;
+      FLEET_MANAGED_CHARGING = 11;
+      PRICE_OPTIMIZED_CHARGING = 12;
+      BATTERY_FRIENDLY_CHARGING = 13;
+      EXTERNAL_NOISE_OPTIMIZED_CHARGING = 14;
+      VIDEO_WATCHING_OPTIMIZED_CHARGING = 15;
+      TIME_CONTROLLED_CHARGING = 16;
+      PEAK_SHAVING_CHARGING = 17;
+      DYNAMIC_LOAD_BALANCED_CHARGING = 18;
+      BUSINESS_SPECIFIC_CHARGING = 19;
+      PREFERRED_CHARGING_TIMES = 20;
+      ENPAL = 21;
+      TIBBER = 22;
+      THE_MOBILITY_HOUSE = 23;
+      AWATTAR = 24;
+      TRONITY = 25;
+      DPD = 26;
+      DEUTSCHE_POST = 27;
+      SMART_CHARGING = 28;
+    }
+
+    enum OfflineMode {
+      NO_OFFLINE_MODE_SELECTED = 0;
+      OFFLINE_MODE_OFF = 1;
+      OFFLINE_MODE_ON = 2;
+    }
+
+    repeated Schedule schedule = 1;
+    google.protobuf.Int64Value start_time = 2;
+    google.protobuf.Int32Value schedule_id = 3;
+    UseCaseId use_case_id = 4;
+    OfflineMode offline_mode = 5;
+
+    message Schedule {
+      google.protobuf.Int32Value duration = 1;
+      google.protobuf.FloatValue power = 2;
+    }
+  }
 }
 
 message HvBatteryStartConditioning {}
